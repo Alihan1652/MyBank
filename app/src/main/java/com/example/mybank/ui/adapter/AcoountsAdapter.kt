@@ -6,7 +6,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.mybank.data.model.Account
 import com.example.mybank.databinding.ItemAccountBinding
 
-class AcoountsAdapter: RecyclerView.Adapter<AcoountsAdapter.AccountViewHolder>(){
+class AcoountsAdapter(
+    val onEdit: (Account) -> Unit,
+    val onSwitchToggle:(String, Boolean) -> Unit,
+    val onDelete: (String) -> Unit
+): RecyclerView.Adapter<AcoountsAdapter.AccountViewHolder>(){
 
     private val items = arrayListOf<Account>()
 
@@ -38,6 +42,20 @@ class AcoountsAdapter: RecyclerView.Adapter<AcoountsAdapter.AccountViewHolder>()
             tvName.text = account.name
             val text = "${account.balance.toString()} ${account.currency}"
             tvBalance.text = text
+            btnEdit.setOnClickListener {
+                onEdit(account)
+            }
+            bthDelete.setOnClickListener {
+                account.id?.let {
+                    onDelete(it)
+                }
+            }
+            switcher.isChecked = account.isActive == true
+            switcher.setOnCheckedChangeListener {_, isChecked ->
+                account.id?.let {
+                    onSwitchToggle(it,isChecked)
+                }
+            }
         }
     }
 }
