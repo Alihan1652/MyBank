@@ -1,4 +1,4 @@
-package com.example.mybank.data.model.network
+package com.example.mybank.data.network
 
 import com.example.mybank.data.model.Account
 import com.example.mybank.data.model.AccountState
