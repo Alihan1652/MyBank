@@ -1,4 +1,4 @@
-package com.example.mybank.ui.adapter
+package com.example.mybank.ui.viewModel.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -23,12 +23,12 @@ class AcoountsAdapter(
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): AcoountsAdapter.AccountViewHolder {
+    ): AccountViewHolder {
         val binding = ItemAccountBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return AccountViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: AcoountsAdapter.AccountViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: AccountViewHolder, position: Int) {
         holder.bind(items[position])
     }
 
