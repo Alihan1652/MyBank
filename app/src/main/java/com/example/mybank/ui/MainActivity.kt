@@ -10,7 +10,7 @@ import com.example.mybank.data.model.Account
 import com.example.mybank.databinding.ActivityMainBinding
 import com.example.mybank.databinding.DialogAddBinding
 import com.example.mybank.ui.viewModel.AccountViewModel
-import com.example.mybank.ui.viewModel.adapter.AcoountsAdapter
+import com.example.mybank.ui.viewModel.adapter.AcсountsAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -18,13 +18,15 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : AppCompatActivity(){
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var adapter: AcoountsAdapter
+    private lateinit var adapter: AcсountsAdapter
+
     private val viewModel: AccountViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         initAdapter()
         subscribeToLiveData()
 
@@ -33,19 +35,21 @@ class MainActivity : AppCompatActivity(){
         }
     }
 
-    private fun subscribeToLiveData(){
-        viewModel.accounts.observe(this){
-            adapter.submitList(it)
+    private fun subscribeToLiveData() {
+        viewModel.accounts.observe(this) { accounts ->
+            adapter = AcсountsAdapter(accounts)
+            binding.recyclerView.layoutManager = LinearLayoutManager(this)
+            binding.recyclerView.adapter = adapter
         }
     }
 
-    private fun showAddDialog(){
+    private fun showAddDialog() {
         val binding = DialogAddBinding.inflate(LayoutInflater.from(this))
-        with(binding){
+        with(binding) {
             AlertDialog.Builder(this@MainActivity)
-                .setTitle("Добовление нового счета")
+                .setTitle("Добавление нового счета")
                 .setView(binding.root)
-                .setPositiveButton("Добавить") {_,_ ->
+                .setPositiveButton("Добавить") { _, _ ->
                     val account = Account(
                         name = etName.text.toString(),
                         balance = etBalance.text.toString().toInt(),
@@ -62,59 +66,9 @@ class MainActivity : AppCompatActivity(){
         viewModel.loadAccounts()
     }
 
-    private fun initAdapter() = with(binding){
-        adapter = AcoountsAdapter(
-            onEdit = {
-                showEditDialog(it)
-            },
-            onSwitchToggle = { id, isChecked ->
-                viewModel.updateAccountPartially(id, isChecked)
-            },
-            onDelete = {
-                showDeleteDialog(it)
-            }
-        )
-        recyclerView.layoutManager = LinearLayoutManager(this@MainActivity)
-        recyclerView.adapter = adapter
-    }
-
-    private fun showDeleteDialog(id: String){
-        AlertDialog.Builder(this)
-            .setTitle("Вы уверены?")
-            .setMessage("Удалить счет с идентификатором - $id?")
-            .setPositiveButton("Удалить"){_,_ ->
-                viewModel.deleteAccount(id)
-            }
-            .setNegativeButton("Отмена"){_,_ ->
-
-            }.show()
-    }
-
-    private fun showEditDialog(account: Account) {
-        val binding = DialogAddBinding.inflate(LayoutInflater.from(this))
-        with(binding){
-
-            account.run {
-
-                etName.setText(name)
-                etBalance.setText(balance.toString())
-                etCurrency.setText(currency)
-
-                AlertDialog.Builder(this@MainActivity)
-                    .setTitle("Изменение счета")
-                    .setView(binding.root)
-                    .setPositiveButton("Изменить") {_,_ ->
-
-                        val updatedAccount = account.copy(
-                            name = etName.text.toString(),
-                            balance = etBalance.text.toString().toInt(),
-                            currency = etCurrency.text.toString()
-                        )
-                        viewModel.updateAccountFully(updatedAccount)
-                    }
-                    .show()
-            }
-        }
-
+    private fun initAdapter() {
+        adapter = AcсountsAdapter(emptyList())
+        binding.recyclerView.layoutManager = LinearLayoutManager(this)
+        binding.recyclerView.adapter = adapter
     }
 }

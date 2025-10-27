@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/switcher"/>
         <TextView
-            android:id="@+id/tv_name"
+            android:id="@+id/tvName"
             android:text="Visa Gold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -36,21 +36,6 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
-            <Button
-                android:id="@+id/btn_edit"
-                android:text="Изменить"
-                android:layout_margin="16dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <Button
-                android:id="@+id/bth_delete"
-                android:text="Удалить"
-                android:layout_margin="16dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
 
         </LinearLayout>
     </LinearLayout>
